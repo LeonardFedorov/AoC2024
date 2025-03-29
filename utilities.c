@@ -5,7 +5,7 @@
 
 //Memory allocation function which crudely error checks by throwing an
 //unrecoverable exception if the allocation fails
-void* HeapAllocEC(HANDLE heap, char zero_init, u64 bytes) {
+void* HeapAllocEC(HANDLE heap, DWORD zero_init, u64 bytes) {
 
 	if (zero_init) zero_init = 8;
 
