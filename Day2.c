@@ -12,27 +12,25 @@ void extend_array(i64** array, u64* curr_len, u64 new_len, HANDLE heap);
 Day_Result Day_2(oString* file_data, HANDLE day_heap) {
 
 	u64 line_count;
-
 	oString* data_as_lines = ostr_split(*file_data, NEWLINE, day_heap, &line_count);
 
 	//Counter for the results
 	u64 safe_count_1 = 0;
 	u64 safe_count_2 = 0;
+	unsigned char safe;
 
-	//Working variables needed in the loop
-	signed char overall_direction;
+	//Working variables needed to parse each line
 	u64 chars_read;
 	u64 cursor;
 	i64 curr_num;
+	u64 line_len;
 
+	//Arrays to store line data in
 	i64* number_list = HeapAllocEC(day_heap, 0, sizeof(i64));
 	i64* number_list_2 = HeapAllocEC(day_heap, 0, sizeof(i64));
 	u64 list_len = 1;
 	u64 list_len_2 = 1;
-	u64 line_len;
-
-	unsigned char safe;
-
+	
 	for (u64 i = 0; i < line_count; i++) {
 
 		//Read the line as an array of ints
@@ -40,7 +38,7 @@ Day_Result Day_2(oString* file_data, HANDLE day_heap) {
 		cursor = 0;
 		while (1) {
 			curr_num = str_parse_int(&data_as_lines[i].str[cursor], &chars_read);
-			cursor += chars_read + 1;
+			cursor += chars_read + 1; //Skip the space between numbers
 
 			//If no number was read, the end of the line has been reached
 			if (!chars_read) break;
@@ -81,7 +79,6 @@ Day_Result Day_2(oString* file_data, HANDLE day_heap) {
 				else {
 					number_list_2[j] = number_list[j];
 				}
-
 			}
 
 			//Test the final list config
@@ -89,9 +86,7 @@ Day_Result Day_2(oString* file_data, HANDLE day_heap) {
 			safe_count_2 += safe;
 
 		}
-
 	}
-
 
 	oString part1 = ostr_from_int(safe_count_1, day_heap);
 	oString part2 = ostr_from_int(safe_count_2, day_heap);
@@ -113,9 +108,7 @@ unsigned char list_safe(i64* list, u64 list_len) {
 			break;
 		}
 	}
-
 	return safe;
-
 }
 
 //Given a pair of numbers, test if the step between them is safe
@@ -141,7 +134,6 @@ unsigned char safe_step(i64 a, i64 b, signed char* overall_direction) {
 	}
 
 	return result;
-
 }
 
 //Extend an array to at least new_len. Array will always be at least doubled
@@ -152,12 +144,12 @@ void extend_array(i64** array, u64* curr_len, u64 new_len, HANDLE heap) {
 	u64 curr_len_local;
 	i64* old_array = *array;
 
+	//Test the point to make the compiler happy
 	if (!curr_len) {
 		RaiseException(1, EXCEPTION_NONCONTINUABLE, 0, NULL);
 	}
 	else {
 		curr_len_local = *curr_len << 1;
-
 		new_len = curr_len_local > new_len ? curr_len_local : new_len;
 
 		*array = HeapAllocEC(heap, 0, sizeof(i64) * new_len);
@@ -169,6 +161,5 @@ void extend_array(i64** array, u64* curr_len, u64 new_len, HANDLE heap) {
 		HeapFree(heap, 0, old_array);
 
 		*curr_len = new_len;
-
 	}
 }
