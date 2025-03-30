@@ -136,6 +136,8 @@
   <ItemGroup>
     <ClCompile Include="Day1.c" />
     <ClCompile Include="Day2.c" />
+    <ClCompile Include="Day3.c" />
+    <ClCompile Include="DayX.c" />
     <ClCompile Include="IO.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="oStrings.c" />

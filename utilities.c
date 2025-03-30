@@ -50,8 +50,6 @@ void bubble_sort(i64* list, u64 len) {
 void q_sort(i64* list, u64 len) {
 
 	register i64 temp;
-	i64 pivot;
-	u64 upper;
 
 	if (len < BUBBLE_LIMIT) {
 		//If the list is small, perform bubble sort on it
@@ -59,12 +57,12 @@ void q_sort(i64* list, u64 len) {
 		return;
 	}
 	else {
-		pivot = list[0]; //Use left-most element as pivot
-		upper = len - 1;
+		i64 pivot = list[0]; //Use left-most element as pivot
+		u64 upper = len - 1;
 
-		//If the upper value is already greater than the pivot, then decrement upper
-		//This loop will halt because list[0] is the pivot itself
-		while (list[upper] > pivot) { upper--; }
+			//If the upper value is already greater than the pivot, then decrement upper
+			//This loop will halt because list[0] is the pivot itself
+			while (list[upper] > pivot) { upper--; }
 
 		for (int i = 1; i <= upper; i++) {
 			//Swap the element to the top part of the array if it's greater than the pivot

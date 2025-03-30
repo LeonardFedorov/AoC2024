@@ -16,7 +16,7 @@ void string_tests();
 oString get_data_file(oString* path_pieces, i64 day_text, HANDLE heap);
 oString* setup_path_pieces(oString exe_path, HANDLE heap);
 
-Day_Result(*day_funcs[25])(oString*, HANDLE) = { Day_1, Day_2, NULL, NULL, NULL, \
+Day_Result(*day_funcs[25])(oString*, HANDLE) = { Day_1, Day_2, Day_3, NULL, NULL, \
 												 NULL, NULL, NULL, NULL, NULL, \
 												 NULL, NULL, NULL, NULL, NULL, \
 												 NULL, NULL, NULL, NULL, NULL, \

@@ -54,3 +54,6 @@ oString ostr_from_NT(char* source);
 //A lone minus sign will be read as 0.
 i64 str_parse_int(char* text, u64 *chars_read);
 
+//Tests if the txt at pointer txt is in fact target. It is incumbent on the caller to ensure there is significant length in txt
+//to avoid a potential buffer overrun
+char is_string(char* txt, oString target);

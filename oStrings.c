@@ -114,7 +114,7 @@ u64 ostr_piece_count(oString src, oString delimiter) {
 
 oString* ostr_split(oString src, oString delimiter, HANDLE heap, u64* piece_count) {
 
-	//Get the number of pikeces and store this value in the caller's pointer if provided
+	//Get the number of pieces and store this value in the caller's pointer if provided
 	u64 pieces = ostr_piece_count(src, delimiter);
 	if (piece_count) *piece_count = pieces;
 

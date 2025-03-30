@@ -6,6 +6,7 @@
 //Convenience typedefs
 typedef signed long long i64;
 typedef unsigned long long u64;
+typedef unsigned char bool;
 
 //String construct used throughout - functions laid out in oStrings.h
 typedef struct ostr {
