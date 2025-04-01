@@ -53,6 +53,12 @@
     <ClCompile Include="Day3.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="oMap.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Day4.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md" />

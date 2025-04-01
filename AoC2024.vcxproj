@@ -140,7 +140,9 @@
     <ClCompile Include="DayX.c" />
     <ClCompile Include="IO.c" />
     <ClCompile Include="main.c" />
+    <ClCompile Include="oMap.c" />
     <ClCompile Include="oStrings.c" />
+    <ClCompile Include="Day4.c" />
     <ClCompile Include="utilities.c" />
   </ItemGroup>
   <ItemGroup>

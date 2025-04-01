@@ -3,6 +3,7 @@
 #include "oStrings.h"
 
 //The struct contains a pointer to an oString, which will be an array of oStrings with one entry for each row
+//The map's design implicitly assumes that all rows are the same width
 typedef struct map {
 	oString* map_data;
 	u64 width;
@@ -14,29 +15,48 @@ typedef struct point {
 	oMap* map;
 	u64 row;
 	u64 col;
-	u64 pos; //The pos is the actual address of the position char - can de-ref to peek the value at the position
+	char* pos; //The pos is the actual address of the position char - can de-ref to peek the value at the position
 } oPoint;
 
 //Directions ordered so that 1-4 can be iterated over when only cardinal directions are relevant
 enum Direction {NoMove = 0, Up = 1, Right = 2, Down = 3, Left = 4, UpLeft = 5, UpRight = 6, DownRight = 7, DownLeft = 8};
-u64 CARDINAL_UPPER = 5;
-u64 DIAGONAL_UPPER = 9;
+u64 CARDINAL_UPPER;
+u64 DIAGONAL_UPPER;
+
+//Reverses the given direction
+inline enum Direction reverse(enum Direction dir);
+
+//Builds a map from an oString where the rows are separated by a delimiter. This function does not validate that all
+//rows are the same width. The first row is the only one explicitly measured.
+//The map is definded referring to the oString's underlying data. No copying is performed.
+oMap map_from_ostr(oString* data, oString row_delimiter, HANDLE heap);
+
+//Returns new column/row co-ordinate after moving dist in dir. Returned value will be wrapped, but pointer can be passed to
+//receive a bool indicating whether this occurred
+u64 move_col(oMap* map, u64 curr_col, u64 dist, enum Direction dir, bool* wrap);
+u64 move_row(oMap* map, u64 curr_row, u64 dist, enum Direction dir, bool* wrap);
+
+//Get a ray of points in direction dir from point with distance len written to existing memory block data_out
+//Ray will wrap - the wrap bool pointer can be used to receive a flag as to whether this occurred
+void get_ray(oPoint point, enum Direction dir, u64 len, char* data_out, bool* wrap);
 
 //Get a pointer to a particular position in the map for read/write
-//Out of bounds query returns a null pointer
-char* get_map_loc(oMap* map, u64 row, u64 col, char wrap);
+//Safe will wrap to the grid, optional bool pointer returns if this occured
+//Unsafe performs no checking but is faster. Caller must check points are in bounds or bad things can happen
+char* get_map_loc(oMap* map, u64 row, u64 col, bool* wrap);
+inline char* get_map_loc_unsafe(oMap* map, u64 row, u64 col);
 
-//Creates a new point object. Result will be wrapped into the grid.
-//If potential out of bounds is a concern, then create a point certainly inside and use the move methods
-//which handle the boundary
-oPoint point_new(oMap* map, u64 row, u64 col);
+//Creates a new point object. Safe version will be wrapped into the grid.
+//Bool pointer reports if this occurs
+//Unsafe will perform no wrap check, caller must check points are in bounds
+oPoint point_new(oMap* map, u64 row, u64 col, bool* wrap);
+inline oPoint point_new_unsafe(oMap* map, u64 row, u64 col);
 
-//Mutably moves a point in a given direction. An out of bounds move results in no movement.
-void point_move_mut(oPoint* point, Direction dir, char wrap);
+//Mutably moves a point in a given direction. Bool pointer reports if a wrap occurred
+void point_move_mut(oPoint* point, u64 dist, enum Direction dir, bool* wrap);
 
-//Copies a point with the option to move it to an adjacent space.
-oPoint point_copy(oPoint* point, Direction dir, char wrap);
+//Creates a point from an existing point, with the option to move it to a nearby space.
+oPoint point_copy(oPoint* point, u64 dist, enum Direction dir, bool* wrap);
 
-//Peak at a point or an adjacent position. Out of bounds query returns 0
-void peek_at_point(oPoint* point, Direction dir, char wrap);
-
+//Gets the value from a point or a nearby point
+char map_peek_value(oPoint* point, u64 dist, enum Direction dir, bool* wrap);

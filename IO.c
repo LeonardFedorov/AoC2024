@@ -60,8 +60,10 @@ oString get_file(oString path, HANDLE heap) {
 	LARGE_INTEGER file_sizeLI;
 	GetFileSizeEx(file_handle, &file_sizeLI);
 
+	//Read the file data and then close the handle
 	char* fileData = HeapAllocEC(heap, 0, file_sizeLI.QuadPart);
 	BOOL read_outcome = ReadFile(file_handle, fileData, (DWORD)file_sizeLI.QuadPart, NULL, NULL);
+	read_outcome |= CloseHandle(file_handle);
 
 	//Throw an exception if the file read reports an error
 	if (!read_outcome) { RaiseException(2, EXCEPTION_NONCONTINUABLE, 0, NULL); }
