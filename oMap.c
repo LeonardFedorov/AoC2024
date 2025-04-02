@@ -1,29 +1,21 @@
 #include "oMap.h"
 
-u64 CARDINAL_UPPER = 5;
-u64 DIAGONAL_UPPER = 9;
+u64 CARDINAL_LOWER = 0;
+u64 CARDINAL_UPPER = 4;
+u64 DIAGONAL_LOWER = 4;
+u64 DIAGONAL_UPPER = 8;
+u64 ALL_LOWER = 0;
+u64 ALL_UPPER_MOVES = 8;
+u64 ALL_UPPER = 9;
 
-inline enum Direction reverse(enum Direction dir) {
-	switch (dir) {
-	case NoMove: 
-		return NoMove;
-	case Up:
-		return Down;
-	case Down:
-		return Up;
-	case Left:
-		return Right;
-	case Right:
-		return Left;
-	case UpLeft:
-		return DownRight;
-	case DownRight:
-		return UpLeft;
-	case UpRight:
-		return DownLeft;
-	case DownLeft:
-		return UpRight;
-	}
+
+enum Direction reverse(enum Direction dir) {
+	if (dir = NoMove) return NoMove;
+	else return reverse_move(dir);
+}
+
+inline enum Direction reverse_move(enum Direction dir) {
+	return dir ^ 1;
 }
 
 oMap map_from_ostr(oString* data, oString row_delimiter, HANDLE heap) {

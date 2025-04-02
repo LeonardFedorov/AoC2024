@@ -19,12 +19,19 @@ typedef struct point {
 } oPoint;
 
 //Directions ordered so that 1-4 can be iterated over when only cardinal directions are relevant
-enum Direction {NoMove = 0, Up = 1, Right = 2, Down = 3, Left = 4, UpLeft = 5, UpRight = 6, DownRight = 7, DownLeft = 8};
-u64 CARDINAL_UPPER;
-u64 DIAGONAL_UPPER;
+enum Direction {Up = 0, Down = 1, Right = 2, Left = 3, UpLeft = 4, DownRight = 5, UpRight = 6, DownLeft = 7, NoMove = 8};
 
-//Reverses the given direction
-inline enum Direction reverse(enum Direction dir);
+u64 CARDINAL_LOWER;
+u64 CARDINAL_UPPER;
+u64 DIAGONAL_LOWER;
+u64 DIAGONAL_UPPER;
+u64 ALL_LOWER;
+u64 ALL_UPPER_MOVES;
+u64 ALL_UPPER;
+
+//Reverses the given direction. Use reverse_move if you know NoMove is not a valid possibility
+enum Direction reverse(enum Direction dir);
+inline enum Direction reverse_move(enum Direction dir);
 
 //Builds a map from an oString where the rows are separated by a delimiter. This function does not validate that all
 //rows are the same width. The first row is the only one explicitly measured.

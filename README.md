@@ -14,7 +14,7 @@ The idiomatic way strings are handled in C is a pointer to a null-terminated cha
 
 ### oMap Type
 This aim of this type is provide a wrapper to an oString which is known to represent a 2d map (which are common in AoC puzzles). The first such puzzle was Day 4. My general approach here is to have all map functions (move, peeking, etc) always wrap around the edges, but report whether a wrap occurred via an optional pointer argument so calling processes that don't want to wrap know to discard the result. In addition, there are unsafe versions of the basic map functions which do not perform wrap checking which are inlined due to their simplicity (e.g. if one is doing a for loop over rows and columns, then all coordinate pairs produced are known to be valid).
-Directions are in a single enum, with 0 representing no movement, 1-4 being the cardinal directions and 5-8 being the diagonals. Opposing directions are separated by 2. This allows for for statements to loop through all common sets of directions (all, all exc. no move, cardinals only, diagonals only).
+Directions are in a single enum, changed so that 0-3 being the cardinal directions and 4-7 being the diagonals and 8 no movement. Opposing directions are consecutive with the same quotient over 2, meaning that directions can be inverted by XOR with 1. This cionstruct allows for for statements to loop through all common sets of directions (all, all exc. no move, cardinals only, diagonals only), these bounds being stored in a set of constants.
 
 ## Individual Day Commentary
 
@@ -35,5 +35,5 @@ This day did not pose a challenge algorithmically, as I had already prepared a s
 
 ### Day 4
 <details>
-This day was the first map themed puzzle and involved building out a first stab at the oMap library. The direction enum seemed to work well here. The solution takes the longest to execute of the days so far (~3.5ms), but the nature of the puzzle just requires for more data searching than the previous ones. Possible efficiency gains would be modifying the ray caster to halt the moment it wraps, rather than always performing a full wrapped ray cast and then letting the caller discard, but as the rays are only 3 long it didn't seem worth creating an extra function just for this. Part 2 involved a horrible boolean case analysis statement which is ugly, but probably reasonably efficient due to short-circuit evaluation.
+This day was the first map themed puzzle and involved building out a first stab at the oMap library. The direction enum seemed to work well here. The solution takes the longest to execute of the days so far (~3.5ms), but the nature of the puzzle just requires for more data searching than the previous ones. Possible efficiency gains would be modifying the ray caster to halt the moment it wraps, rather than always performing a full wrapped ray cast and then letting the caller discard, but as the rays are only 3 long it didn't seem worth creating an extra function just for this. Part 2 initially involved a horrible boolean case analysis statement which was ugly, but which has now been improved by the revised reversal function.
 </details>

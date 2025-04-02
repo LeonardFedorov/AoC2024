@@ -20,6 +20,7 @@ Day_Result Day_4(oString* file_data, HANDLE day_heap) {
 
 	u64 part_1_count = 0;
 	u64 part_2_count = 0;
+	u64 part_2_subcount = 0;
 
 	for (int row = 0; row < data.height; row++) {
 		for (int col = 0; col < data.width; col++) {
@@ -29,7 +30,7 @@ Day_Result Day_4(oString* file_data, HANDLE day_heap) {
 			//Perform part 1 test
 			if (*target_point.pos == START) {
 
-				for (int dir = 1; dir < DIAGONAL_UPPER; dir++) {
+				for (u64 dir = ALL_LOWER; dir < ALL_UPPER_MOVES; dir++) {
 
 					//Read the ray from our point in each direction. Don't check if the ray went off the edge
 					get_ray(target_point, dir, SEARCH.len, ray_store, &wrap_flag);
@@ -44,22 +45,22 @@ Day_Result Day_4(oString* file_data, HANDLE day_heap) {
 
 			//Perform part 2 test - only needed if point is not on the edge
 			if (*target_point.pos == START_2 &&
-				row > 0 && 
-				col > 0 && 
-				row < data.height - 1 && 
+				row > 0 &&
+				col > 0 &&
+				row < data.height - 1 &&
 				col < data.width - 1) {
 
 				//Get the chars in the 4 corners and then test if the pairs exist
-				for (int dir = CARDINAL_UPPER; dir < DIAGONAL_UPPER; dir++) {
-					four_corners[dir - 5] = map_peek_value(&target_point, 1, dir, NULL);
+				for (u64 dir = DIAGONAL_LOWER; dir < DIAGONAL_UPPER; dir++) {
+					four_corners[dir - DIAGONAL_LOWER] = map_peek_value(&target_point, 1, dir, NULL);
 				}
 
-				//I hate this, but I guess the fact that the logic short-circuits means the evaluation here is going to be pretty efficient
-				if (
-					((four_corners[0] == 'M' && four_corners[2] == 'S') || (four_corners[0] == 'S' && four_corners[2] == 'M'))
-					&&
-					((four_corners[1] == 'M' && four_corners[3] == 'S') || (four_corners[1] == 'S' && four_corners[3] == 'M'))
-					) part_2_count++;
+				part_2_subcount = 0;
+				for (u64 dir = DIAGONAL_LOWER; dir < DIAGONAL_UPPER; dir++) {
+					part_2_subcount += (four_corners[dir - DIAGONAL_LOWER] == 'M') && (four_corners[reverse_move(dir) - DIAGONAL_LOWER] == 'S');
+				}
+
+				part_2_count += part_2_subcount == 2;
 
 			}
 		}
